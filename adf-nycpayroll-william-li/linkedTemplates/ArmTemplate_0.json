@@ -781,13 +781,17 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "DS_nycpayroll_2020",
+								"referenceName": "DS_SQL_Payroll2020",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
 						}
 					],
-					"transformations": [],
+					"transformations": [
+						{
+							"name": "castColumns"
+						}
+					],
 					"scriptLines": [
 						"source(output(",
 						"          FiscalYear as string,",
@@ -813,39 +817,54 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 sink(allowSchemaDrift: true,",
+						"source1 derive(FiscalYear = toInteger(FiscalYear),",
+						"          PayrollNumber = toInteger(PayrollNumber),",
+						"          AgencyStartDate = toDate(AgencyStartDate, 'MM/dd/yyyy'),",
+						"          BaseSalary = toDouble(BaseSalary),",
+						"          RegularHours = toDouble(RegularHours),",
+						"          RegularGrossPaid = toDouble(RegularGrossPaid),",
+						"          OTHours = toDouble(OTHours),",
+						"          TotalOTPaid = toDouble(TotalOTPaid),",
+						"          TotalOtherPay = toDouble(TotalOtherPay)) ~> castColumns",
+						"castColumns sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          FiscalYear as string,",
-						"          PayrollNumber as string,",
+						"          FiscalYear as integer,",
+						"          PayrollNumber as integer,",
 						"          AgencyID as string,",
 						"          AgencyName as string,",
 						"          EmployeeID as string,",
 						"          LastName as string,",
 						"          FirstName as string,",
-						"          AgencyStartDate as string,",
+						"          AgencyStartDate as date,",
 						"          WorkLocationBorough as string,",
 						"          TitleCode as string,",
 						"          TitleDescription as string,",
 						"          LeaveStatusasofJune30 as string,",
-						"          BaseSalary as string,",
+						"          BaseSalary as double,",
 						"          PayBasis as string,",
-						"          RegularHours as string,",
-						"          RegularGrossPaid as string,",
-						"          OTHours as string,",
-						"          TotalOTPaid as string,",
-						"          TotalOtherPay as string",
+						"          RegularHours as double,",
+						"          RegularGrossPaid as double,",
+						"          OTHours as double,",
+						"          TotalOTPaid as double,",
+						"          TotalOtherPay as double",
 						"     ),",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     preCommands: [],",
+						"     postCommands: []) ~> sink1"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/DS_nycpayroll_2020')]"
+				"[concat(variables('factoryId'), '/datasets/DS_nycpayroll_2020')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Payroll2020')]"
 			]
 		},
 		{
@@ -867,13 +886,17 @@
 					"sinks": [
 						{
 							"dataset": {
-								"referenceName": "nycpayroll_2021",
+								"referenceName": "DS_SQL_Payroll2021",
 								"type": "DatasetReference"
 							},
 							"name": "sink1"
 						}
 					],
-					"transformations": [],
+					"transformations": [
+						{
+							"name": "castColumns"
+						}
+					],
 					"scriptLines": [
 						"source(output(",
 						"          FiscalYear as string,",
@@ -899,39 +922,54 @@
 						"     allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     ignoreNoFilesFound: false) ~> source1",
-						"source1 sink(allowSchemaDrift: true,",
+						"source1 derive(FiscalYear = toInteger(FiscalYear),",
+						"          PayrollNumber = toInteger(PayrollNumber),",
+						"          AgencyStartDate = toDate(AgencyStartDate, 'MM/dd/yyyy'),",
+						"          BaseSalary = toDouble(BaseSalary),",
+						"          RegularHours = toDouble(RegularHours),",
+						"          RegularGrossPaid = toDouble(RegularGrossPaid),",
+						"          OTHours = toDouble(OTHours),",
+						"          TotalOTPaid = toDouble(TotalOTPaid),",
+						"          TotalOtherPay = toDouble(TotalOtherPay)) ~> castColumns",
+						"castColumns sink(allowSchemaDrift: true,",
 						"     validateSchema: false,",
 						"     input(",
-						"          FiscalYear as string,",
-						"          PayrollNumber as string,",
+						"          FiscalYear as integer,",
+						"          PayrollNumber as integer,",
 						"          AgencyCode as string,",
 						"          AgencyName as string,",
 						"          EmployeeID as string,",
 						"          LastName as string,",
 						"          FirstName as string,",
-						"          AgencyStartDate as string,",
+						"          AgencyStartDate as date,",
 						"          WorkLocationBorough as string,",
 						"          TitleCode as string,",
 						"          TitleDescription as string,",
 						"          LeaveStatusasofJune30 as string,",
-						"          BaseSalary as string,",
+						"          BaseSalary as double,",
 						"          PayBasis as string,",
-						"          RegularHours as string,",
-						"          RegularGrossPaid as string,",
-						"          OTHours as string,",
-						"          TotalOTPaid as string,",
-						"          TotalOtherPay as string",
+						"          RegularHours as double,",
+						"          RegularGrossPaid as double,",
+						"          OTHours as double,",
+						"          TotalOTPaid as double,",
+						"          TotalOtherPay as double",
 						"     ),",
-						"     umask: 0022,",
-						"     preCommands: [],",
-						"     postCommands: [],",
+						"     deletable:false,",
+						"     insertable:true,",
+						"     updateable:false,",
+						"     upsertable:false,",
+						"     format: 'table',",
 						"     skipDuplicateMapInputs: true,",
-						"     skipDuplicateMapOutputs: true) ~> sink1"
+						"     skipDuplicateMapOutputs: true,",
+						"     errorHandlingOption: 'stopOnFirstError',",
+						"     preCommands: [],",
+						"     postCommands: []) ~> sink1"
 					]
 				}
 			},
 			"dependsOn": [
-				"[concat(variables('factoryId'), '/datasets/nycpayroll_2021')]"
+				"[concat(variables('factoryId'), '/datasets/nycpayroll_2021')]",
+				"[concat(variables('factoryId'), '/datasets/DS_SQL_Payroll2021')]"
 			]
 		},
 		{
