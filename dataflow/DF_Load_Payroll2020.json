@@ -21,7 +21,11 @@
 					"name": "sink1"
 				}
 			],
-			"transformations": [],
+			"transformations": [
+				{
+					"name": "castColumns"
+				}
+			],
 			"scriptLines": [
 				"source(output(",
 				"          FiscalYear as string,",
@@ -47,7 +51,16 @@
 				"     allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     ignoreNoFilesFound: false) ~> source1",
-				"source1 sink(allowSchemaDrift: true,",
+				"source1 derive(FiscalYear = toInteger(FiscalYear),",
+				"          PayrollNumber = toInteger(PayrollNumber),",
+				"          AgencyStartDate = toDate(AgencyStartDate, 'MM/dd/yyyy'),",
+				"          BaseSalary = toDouble(BaseSalary),",
+				"          RegularHours = toDouble(RegularHours),",
+				"          RegularGrossPaid = toDouble(RegularGrossPaid),",
+				"          OTHours = toDouble(OTHours),",
+				"          TotalOTPaid = toDouble(TotalOTPaid),",
+				"          TotalOtherPay = toDouble(TotalOtherPay)) ~> castColumns",
+				"castColumns sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     input(",
 				"          FiscalYear as integer,",
