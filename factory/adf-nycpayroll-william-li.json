@@ -1,0 +1,15 @@
+{
+	"name": "adf-nycpayroll-william-li",
+	"properties": {
+		"trustModeClaimForMi": {
+			"value": "Disabled",
+			"editable": true
+		}
+	},
+	"location": "westus2",
+	"identity": {
+		"type": "SystemAssigned",
+		"principalId": "c1f8486a-7ca0-40f0-b962-048afb60b316",
+		"tenantId": "f958e84a-92b8-439f-a62d-4f45996b6d07"
+	}
+}
