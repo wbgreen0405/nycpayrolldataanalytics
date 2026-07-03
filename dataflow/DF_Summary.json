@@ -22,7 +22,7 @@
 			"sinks": [
 				{
 					"dataset": {
-						"referenceName": "DS_Synapse_Summary",
+						"referenceName": "DS_SQL_Summary",
 						"type": "DatasetReference"
 					},
 					"name": "sink1"
@@ -142,12 +142,22 @@
 				"     TotalPaid = sum(toFloat(TotalPaid))) ~> aggregate1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
-				"     truncate: true,",
-				"     umask: 0022,",
-				"     preCommands: [],",
-				"     postCommands: [],",
+				"     input(",
+				"          FiscalYear as integer,",
+				"          AgencyName as string,",
+				"          TotalPaid as double",
+				"     ),",
+				"     deletable:false,",
+				"     insertable:true,",
+				"     updateable:false,",
+				"     upsertable:false,",
+				"     truncate:true,",
+				"     format: 'table',",
 				"     skipDuplicateMapInputs: true,",
-				"     skipDuplicateMapOutputs: true) ~> sink1",
+				"     skipDuplicateMapOutputs: true,",
+				"     errorHandlingOption: 'stopOnFirstError',",
+				"     preCommands: [],",
+				"     postCommands: []) ~> sink1",
 				"aggregate1 sink(allowSchemaDrift: true,",
 				"     validateSchema: false,",
 				"     umask: 0022,",
